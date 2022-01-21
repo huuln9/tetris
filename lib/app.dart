@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 const numInRow = 20;
@@ -16,11 +16,17 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   var gameStarted = false;
   var shapeArr = [
-    [10, 29, 30, 31],
-    [10, 30, 50, 70],
-    [9, 10, 30, 31],
-    [10, 11, 30, 31],
+    [10, 29, 30, 31], // 0
+    [10, 30, 31, 50],
+    [9, 10, 11, 30],
+    [10, 29, 30, 50],
+    [10, 30, 50, 70], // 4
+    [9, 10, 11, 12],
+    [9, 10, 30, 31], // 6
+    [11, 30, 31, 50],
+    [10, 11, 30, 31], // 8
   ];
+  var shapeLandedArr = [];
   var shape = [];
 
   static var randomNum = Random();
@@ -34,15 +40,37 @@ class _AppState extends State<App> {
 
     const duration = Duration(milliseconds: 200);
     Timer.periodic(duration, (Timer timer) {
-      moveDown();
+      // moveDown();
       if (landed()) {
         timer.cancel();
-        generateNewShape();
+        // generateNewShape();
       }
       // if (landed()) {
       //   timer.cancel();
       //   _showGameOverScreen();
       // }
+    });
+  }
+
+  void scrollShape() {
+    setState(() {
+      if (listEquals(shape, shapeArr[0])) {
+        shape = shapeArr[1];
+      } else if (listEquals(shape, shapeArr[1])) {
+        shape = shapeArr[2];
+      } else if (listEquals(shape, shapeArr[2])) {
+        shape = shapeArr[3];
+      } else if (listEquals(shape, shapeArr[3])) {
+        shape = shapeArr[1];
+      } else if (listEquals(shape, shapeArr[4])) {
+        shape = shapeArr[5];
+      } else if (listEquals(shape, shapeArr[5])) {
+        shape = shapeArr[4];
+      } else if (listEquals(shape, shapeArr[6])) {
+        shape = shapeArr[7];
+      } else if (listEquals(shape, shapeArr[7])) {
+        shape = shapeArr[6];
+      }
     });
   }
 
@@ -143,7 +171,7 @@ class _AppState extends State<App> {
                         width: 100,
                         height: 100,
                         child: IconButton(
-                          onPressed: () => setState(() {}),
+                          onPressed: () => scrollShape(),
                           icon: const Icon(
                             Icons.refresh,
                             size: 50,
